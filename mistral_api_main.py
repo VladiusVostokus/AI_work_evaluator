@@ -1,5 +1,5 @@
 import os
-from mistralai import Mistral
+from mistralai.client import Mistral
 from dotenv import load_dotenv, dotenv_values
 from message_template_parts.sys_msg import sys_msg
 from message_template_parts.usr_msg import usr_msg
