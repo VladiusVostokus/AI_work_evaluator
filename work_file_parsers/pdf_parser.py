@@ -7,7 +7,10 @@ class PdfParser(WorkParser):
 
     def get_all_content(self):
         data = pymupdf.open(self.file)
-        return data[0].get_text()
+        result = ''
+        for page in data:
+            result += page.get_text()
+        return result
 
     def get_all_tables(self):
         pass

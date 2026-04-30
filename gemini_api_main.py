@@ -2,7 +2,8 @@ from google import genai
 import os
 from dotenv import load_dotenv, dotenv_values 
 from message_template_parts.sys_msg import sys_msg_template, role_descriprion, response_format, response_constrains, task_description, task_structure, criteria_description, criteria_format
-from message_template_parts.usr_msg import usr_msg
+#from message_template_parts.usr_msg import usr_msg
+from work_file_parsers.pdf_parser import PdfParser
 
 load_dotenv()
 GEM_API = os.getenv('GEM_API') 
@@ -17,6 +18,12 @@ sys_msg = sys_msg_template.to_string(role_descriprion=role_descriprion,
                                    response_constrains=response_constrains,
                                    response_format=response_format)
 
+print("Введіть ім'я роботи для перевірки:")
+file = input()
+
+parser = PdfParser(file)
+user_msg = parser.get_all_content()
+
 response = client.models.generate_content(
     model="gemini-3-flash-preview",
     contents=[
@@ -29,7 +36,7 @@ response = client.models.generate_content(
         {
             "role":"user",
             "parts":[
-                {"text": usr_msg }
+                {"text": user_msg }
             ]
         },
     ]
