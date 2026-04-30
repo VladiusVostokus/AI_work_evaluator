@@ -7,10 +7,11 @@ from work_file_parsers.parser_factory import work_parser
 
 
 class Gemini(LLMModel):
-    def __init__(self):
+    def __init__(self, model_name):
         load_dotenv()
         GEM_API = os.getenv('GEM_API') 
         self.client = genai.Client(api_key=GEM_API)
+        self.model = model_name
 
     def form_message(self, file):
         self.sys_msg = sys_msg_template.to_string(
@@ -27,7 +28,7 @@ class Gemini(LLMModel):
 
     def make_request(self):
         self.response = self.client.models.generate_content(
-            model="gemini-3-flash-preview",
+            model=self.model,
             contents=[
                 { 
                     "role":"system",
