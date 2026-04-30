@@ -1,9 +1,9 @@
-from api.gemini import Gemini
+from api.llm_api_factory import llm_api
 
 print("Введіть ім'я роботи для перевірки:")
 file = input()
 
-gemini = Gemini("gemini-3-flash-preview")
-gemini.form_message(file)
-gemini.make_request()
-print(gemini.get_response())
+llm = llm_api("gemini-3-flash-preview")
+llm.form_message(file)
+llm.make_request()
+print(llm.get_response())
