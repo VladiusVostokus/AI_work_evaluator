@@ -11,5 +11,5 @@ class LLMModel(ABC):
         pass
     
     @abstractmethod
-    def get_resonse():
+    def get_response():
         pass
