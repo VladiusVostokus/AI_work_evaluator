@@ -5,5 +5,8 @@ models = {
 }
 
 def llm_api(model_name):
-    model = models[model_name]
-    return model(model_name)
+    if model_name in models:
+        model = models[model_name]
+        return model(model_name)
+    else:
+        return None
