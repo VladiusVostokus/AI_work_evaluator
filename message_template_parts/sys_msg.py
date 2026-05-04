@@ -53,6 +53,14 @@ sys_msg_template = PromptTemplate('''You are ${role_descriprion}
 ${response_constrains}\nВідповідай СТРОГО у форматі:
 ${response_format}будь який інший текст заборонений''')
 
+message_mock = {
+    'role_descriprion': role_descriprion,
+    'task_description': task_description,
+    'task_structure': task_structure,
+    'response_constrains': response_constrains,
+    'response_format': response_format,
+}
+
 sys_msg = '''You are teacher of ukrainian university you check works with given instructions, so user requests and your responses will be in ukrainian language. 
     Further instructuon also will be in ukrainian language. Ти виконуєш перевірку лабораторних робіт з дисципліни "Основи технологій R&D", 
 Робота містить такі завдання:

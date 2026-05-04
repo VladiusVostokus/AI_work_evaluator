@@ -2,7 +2,7 @@ from google import genai
 from interfaces.llm_model import LLMModel
 import os
 from dotenv import load_dotenv
-from message_template_parts.sys_msg import sys_msg_template, role_descriprion, response_format, response_constrains, task_description, task_structure
+from message_template_parts.sys_msg import sys_msg_template, message_mock
 from work_file_parsers.parser_factory import work_parser
 
 
@@ -17,12 +17,13 @@ class Gemini(LLMModel):
         criteria_parser = work_parser(criteria)
         criteria = criteria_parser.get_all_content()
         self.sys_msg = sys_msg_template.to_string(
-            role_descriprion=role_descriprion,
-            task_description=task_description,
-            task_structure=task_structure,
+            role_descriprion=message_mock['role_descriprion'],
+            task_description=message_mock['task_description'],
+            task_structure=message_mock['task_structure'],
             criteria=criteria,
-            response_constrains=response_constrains,
-            response_format=response_format)
+            response_constrains=message_mock['response_constrains'],
+            response_format=message_mock['response_format']
+        )
         
         parser = work_parser(file)
         self.usr_msg = parser.get_all_content()
