@@ -9,11 +9,5 @@ class TestPdfParser(unittest.TestCase):
         work_data = parser.get_all_content()
         self.assertEqual(work_data, 'Some file with text \n')
 
-    #def test_work_pds(self):
-        #file = 'tests/files/file2.pdf'
-        #parser = PdfParser(file)
-        #work_data = parser.get_all_content()
-        #self.assertEqual(work_data, work_file)
-        
 if __name__ == '__main__':
     unittest.main()
