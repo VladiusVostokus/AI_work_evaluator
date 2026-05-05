@@ -9,5 +9,11 @@ class TestPdfParser(unittest.TestCase):
         work_data = parser.get_all_content()
         self.assertEqual(work_data, 'Some file with text \n')
 
+    def test_tables_pdf(self):
+        file = 'tests/files/doc.pdf'
+        parser = PdfParser(file)
+        work_data = parser.get_all_tables()
+        self.assertIsNotNone(work_data)
+
 if __name__ == '__main__':
     unittest.main()
