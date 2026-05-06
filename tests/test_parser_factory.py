@@ -7,3 +7,6 @@ class TestParserFactory(unittest.TestCase):
         filename = 'somedir/somefile.pdf'
         parser = work_parser(filename)
         self.assertEqual(type(parser), PdfParser)
+
+if __name__ == '__main__':
+    unittest.main()

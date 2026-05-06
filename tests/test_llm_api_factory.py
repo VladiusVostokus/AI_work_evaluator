@@ -7,3 +7,6 @@ class TestParserFactory(unittest.TestCase):
         model_name = 'gemini-3-flash-preview'
         model = llm_api(model_name)
         self.assertEqual(type(model), Gemini)
+
+if __name__ == '__main__':
+    unittest.main()
