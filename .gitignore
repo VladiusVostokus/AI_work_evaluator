@@ -2,3 +2,4 @@ env
 __pycache__
 .env
 *.bat
+tests/test_llm_api_factory.py
