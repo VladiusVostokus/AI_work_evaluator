@@ -29,5 +29,15 @@ class TestPdfParser(unittest.TestCase):
         for i, block in enumerate(work_data):
             self.assertEqual(block['type'], type_list[i])
 
+    def test_parsed_complex_pdf(self):
+        file = 'tests/files/doc3.pdf'
+        parser = PdfParser(file)
+        work_data = parser.get_all_content()
+        pdf_block_count = 3
+        self.assertEqual(len(work_data), pdf_block_count)
+        parsed_data = parser.get_parsed_data()
+        result_table = 'Some text\n\n===TABLE START===\n| 1 | 2 | 3 |\n| --- | --- | --- |\n| 4 | 5 | 6 |\n| 7 | 8 | 9 |\n===TABLE END===\n\nSome text 2\n\n'
+        self.assertEqual(parsed_data, result_table)
+
 if __name__ == '__main__':
     unittest.main()
