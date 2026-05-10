@@ -15,7 +15,7 @@ class Gemini(LLMModel):
 
     def form_message(self, file, criteria):
         criteria_parser = work_parser(criteria)
-        criteria = criteria_parser.get_all_content()
+        criteria = criteria_parser.get_parsed_data()
         self.sys_msg = sys_msg_template.to_string(
             role_descriprion=message_mock['role_descriprion'],
             task_description=message_mock['task_description'],
@@ -26,7 +26,7 @@ class Gemini(LLMModel):
         )
         
         parser = work_parser(file)
-        self.usr_msg = parser.get_all_content()
+        self.usr_msg = parser.get_parsed_data()
 
     def make_request(self):
         self.response = self.client.models.generate_content(
