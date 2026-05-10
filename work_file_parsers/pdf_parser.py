@@ -41,9 +41,6 @@ class PdfParser(WorkParser):
                                 result.append({'type':'text', 'data': text}) 
             return result
 
-    def get_all_tables(self):
-        pass
-
     def get_parsed_data(self):
         file_content = self.get_all_content()
         parsed_data = mark_table_bounds(file_content)
