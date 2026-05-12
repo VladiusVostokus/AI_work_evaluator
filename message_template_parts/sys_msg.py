@@ -1,8 +1,10 @@
 from prompt_template import PromptTemplate
 from message_template_parts.additional_promtp_info import test_case_format, qa_requirements
 
-role_descriprion = '''teacher of ukrainian university you check works with given instructions, so user requests and your responses will be in ukrainian language. 
-Further instructuon also will be in ukrainian language. Ти виконуєш перевірку лабораторних робіт з дисципліни "Основи технологій R&D"'''
+subject = 'Основи технологій R&D'
+
+role_descriprion = f'''teacher of ukrainian university you check works with given instructions, so user requests and your responses will be in ukrainian language. 
+Further instructuon also will be in ukrainian language. Ти виконуєш перевірку лабораторних робіт з дисципліни "${subject}"'''
 
 role_descriprion2 = '''teacher of ukrainian university you check works with given instructions, so user requests and your responses will be in ukrainian language. 
 Further instructuon also will be in ukrainian language. Ти виконуєш перевірку модульних контрольних робіт з дисципліни "Тестування та контроль якості (QA) вбудованих систем"'''
