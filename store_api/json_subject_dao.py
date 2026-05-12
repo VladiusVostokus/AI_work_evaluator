@@ -18,5 +18,23 @@ class JSONSubjectDAO(SubjectDAO):
     def get_subject_data(self):
         pass
 
-    def create_task(self, task_data: Task):
-        pass
+    def create_task(self, task_data: Task, subject: str):
+        subject_path = f'{self.store}/{subject}.json'
+        if os.path.exists(subject_path) and os.path.getsize != 0:
+            with open(subject_path, 'r') as t:
+                try:
+                    data = json.load(t)
+                except json.JSONDecodeError:
+                    data = {}
+        else:
+            data = {}
+        
+        data[task_data.name] = {
+                'description': task_data.description,
+                'structure': task_data.structure,
+                'criteria': task_data.criteria
+            }
+        with open(subject_path, 'w', encoding='utf-8') as t:
+            json.dump(data, t, ensure_ascii=False, indent=2)
+
+        
