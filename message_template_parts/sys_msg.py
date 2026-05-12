@@ -4,7 +4,7 @@ from message_template_parts.additional_promtp_info import test_case_format, qa_r
 subject = 'Основи технологій R&D'
 
 role_descriprion = f'''teacher of ukrainian university you check works with given instructions, so user requests and your responses will be in ukrainian language. 
-Further instructuon also will be in ukrainian language. Ти виконуєш перевірку лабораторних робіт з дисципліни "${subject}"'''
+Further instructuon also will be in ukrainian language. Ти виконуєш перевірку лабораторних робіт з дисципліни "{subject}"'''
 
 role_descriprion2 = '''teacher of ukrainian university you check works with given instructions, so user requests and your responses will be in ukrainian language. 
 Further instructuon also will be in ukrainian language. Ти виконуєш перевірку модульних контрольних робіт з дисципліни "Тестування та контроль якості (QA) вбудованих систем"'''
@@ -45,7 +45,7 @@ task_structure2 = f'''
 2. Зміст роботи(Розділи та їх сторінки)
 3. Тест кейси
 
-Тест кейс має такий формат ${test_case_format}.
+Тест кейс має такий формат {test_case_format}.
 Початок таблиць позначається як ===TABLE START===, закінчення позначається як ===TABLE END===
 Test objective - ціль тестування
 Setup description - опис сетапу і налаштувань системи під цей тест кейс. Може бути перелік пунктів чи просто текстом.
