@@ -1,4 +1,4 @@
-from api.llm_api_factory import llm_api
+from llm_api.llm_api_factory import llm_api
 
 print("Введіть ім'я роботи для перевірки:")
 file = input()
