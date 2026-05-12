@@ -10,8 +10,7 @@ class JSONSubjectDAO(SubjectDAO):
             os.mkdir(store)
 
     def create_subject(self, name: str):
-        file_name = f'${name}.json'
-        subject_path = f'${self.store}/${file_name}'
+        subject_path = f'{self.store}/{name}.json'
         if not os.path.exists(subject_path):
             with open(subject_path, 'w'):
                 pass
