@@ -15,8 +15,12 @@ class JSONSubjectDAO(SubjectDAO):
             with open(subject_path, 'w'):
                 pass
         
-    def get_subject_data(self):
-        pass
+    def get_subject_data(self, name: str):
+        subject_path = f'{self.store}/{name}.json'
+        if os.path.exists(subject_path):
+            with open(subject_path, 'r') as s:
+                data = json.load(s)  
+                return data
 
     def create_task(self, task_data: Task, subject: str):
         subject_path = f'{self.store}/{subject}.json'
