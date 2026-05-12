@@ -41,4 +41,12 @@ class JSONSubjectDAO(SubjectDAO):
         with open(subject_path, 'w', encoding='utf-8') as t:
             json.dump(data, t, ensure_ascii=False, indent=2)
 
+    def get_task_data(self, subject: str, task: str):
+        subject_path = f'{self.store}/{subject}.json'
+        if os.path.exists(subject_path):
+            with open(subject_path, 'r') as s:
+                data = json.load(s)  
+                return data[task]
+
+
         
