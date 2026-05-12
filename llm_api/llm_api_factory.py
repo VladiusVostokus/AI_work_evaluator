@@ -1,4 +1,4 @@
-from api.gemini import Gemini
+from llm_api.gemini import Gemini
 
 models = {
     "gemini-3-flash-preview": Gemini,
