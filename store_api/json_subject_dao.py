@@ -35,7 +35,6 @@ class JSONSubjectDAO(SubjectDAO):
         
         data[task_data.name] = {
                 'description': task_data.description,
-                'structure': task_data.structure,
                 'criteria': task_data.criteria
             }
         with open(subject_path, 'w', encoding='utf-8') as t:

@@ -26,23 +26,21 @@ class TestJSONSubjectDao(unittest.TestCase):
         db_path = './tests/db'
         subject = 'Алгоритми і структури даних'
         subject_path = f'{db_path}/{subject}.json'
-        task = Task('lab1','just lab 1','1. Create program\n2. Test it', '5 very well\n0 very bad')
+        task = Task('lab1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
         dao = JSONSubjectDAO(db_path)
         dao.create_subject(subject)
         dao.create_task(task, subject)
         with open(subject_path, 'r') as t:
             data = json.load(t)
-            self.assertEqual(data['lab1']['description'], 'just lab 1')
-            self.assertEqual(data['lab1']['structure'], '1. Create program\n2. Test it')
+            self.assertEqual(data['lab1']['description'], 'just lab 1\n1. Create program\n2. Test it')
             self.assertEqual(data['lab1']['criteria'], '5 very well\n0 very bad')
 
-        task2 = Task('lab2','just lab 2','1. Do something', '5 very well\n0 very bad')
+        task2 = Task('lab2','just lab 2\n1. Do something', '5 very well\n0 very bad')
         dao.create_task(task2, subject)
         with open(subject_path, 'r') as t:
             data = json.load(t)
             self.assertIsNotNone(data['lab1'])
-            self.assertEqual(data['lab2']['description'], 'just lab 2')
-            self.assertEqual(data['lab2']['structure'], '1. Do something')
+            self.assertEqual(data['lab2']['description'], 'just lab 2\n1. Do something')
             self.assertEqual(data['lab2']['criteria'], '5 very well\n0 very bad')
         os.remove(subject_path)
         os.rmdir(db_path)
@@ -51,8 +49,8 @@ class TestJSONSubjectDao(unittest.TestCase):
         db_path = './tests/db'
         subject = 'Алгоритми і структури даних'
         subject_path = f'{db_path}/{subject}.json'
-        task = Task('lab1','just lab 1','1. Create program\n2. Test it', '5 very well\n0 very bad')
-        task2 = Task('lab2','just lab 2','1. Do something', '5 very well\n0 very bad')
+        task = Task('lab1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        task2 = Task('lab2','just lab 2\n1. Do something', '5 very well\n0 very bad')
         dao = JSONSubjectDAO(db_path)
 
         dao.create_subject(subject)
@@ -61,8 +59,8 @@ class TestJSONSubjectDao(unittest.TestCase):
         data = dao.get_subject_data(subject)
         self.assertIsNotNone(data)
 
-        self.assertEqual(data['lab1']['description'], 'just lab 1')
-        self.assertEqual(data['lab2']['description'], 'just lab 2')
+        self.assertEqual(data['lab1']['description'], 'just lab 1\n1. Create program\n2. Test it')
+        self.assertEqual(data['lab2']['description'], 'just lab 2\n1. Do something')
 
         os.remove(subject_path)
         os.rmdir(db_path)
@@ -71,7 +69,7 @@ class TestJSONSubjectDao(unittest.TestCase):
         db_path = './tests/db'
         subject = 'Алгоритми і структури даних'
         subject_path = f'{db_path}/{subject}.json'
-        task = Task('lab1','just lab 1','1. Create program\n2. Test it', '5 very well\n0 very bad')
+        task = Task('lab1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
         dao = JSONSubjectDAO(db_path)
 
         dao.create_subject(subject)
@@ -79,7 +77,7 @@ class TestJSONSubjectDao(unittest.TestCase):
 
         data = dao.get_task_data(subject, 'lab1')
         self.assertIsNotNone(data)
-        self.assertEqual(data['description'], 'just lab 1')
+        self.assertEqual(data['description'], 'just lab 1\n1. Create program\n2. Test it')
 
         os.remove(subject_path)
         os.rmdir(db_path)

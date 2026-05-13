@@ -4,7 +4,6 @@ from dataclasses import dataclass
 class Task:
     name: str
     description: str
-    structure: str
     criteria: str
 
 
