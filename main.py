@@ -27,13 +27,17 @@ if len(os.listdir(store)) == 0:
 print("Оберіть дисципліну(вкажіть назву):")
 subject = input()
 
-print("Введіть ім'я роботи для перевірки(шлях до файлу):")
+print("Оберіть завдання для перевірки(вкажіть назву):")
+task_name = input()
+
+print("Введіть шлях до файлу роботи:")
 task_path = input()
 
 print("Введіть ім'я мовної моделі, яку хочете використати:")
 llm_name = input()
 llm = llm_api(llm_name)
 if llm != None:
+    task = dao.get_task_data(subject, task_name)
     llm.form_message(subject, task_path, task)
     llm.make_request()
     print(llm.get_response())
