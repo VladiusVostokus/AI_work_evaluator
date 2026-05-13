@@ -1,7 +1,6 @@
 from llm_api.llm_api_factory import llm_api
 from store_api.json_subject_dao import JSONSubjectDAO
 from store_api.task_dto import Task
-from message_template_parts.sys_msg import task_description
 from work_file_parsers.parser_factory import work_parser
 import os
 
@@ -14,12 +13,14 @@ if len(os.listdir(store)) == 0:
     dao.create_subject(subject_name)
     print("Створіть нове завдання, введіть ім'я")
     task_name = input()
-    print("Опис дисципліни додано")
-    description = task_description
+    print("Додайте опис дисципліни(вкажіть шлях до файлу)")
+    description_path = input()
+    desc_parser = work_parser(description_path)
+    description = desc_parser.get_parsed_data()
     print("Вкажіть критерії оцінювання завдання(шлях до файлу): ")
     criteria_path = input()
-    parser = work_parser(criteria_path)
-    criteria = parser.get_parsed_data()
+    task_parser = work_parser(criteria_path)
+    criteria = task_parser.get_parsed_data()
     task = Task(task_name, description, criteria)
     dao.create_task(task, subject_name)
 
