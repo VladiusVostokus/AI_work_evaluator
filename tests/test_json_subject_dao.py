@@ -1,6 +1,6 @@
 import unittest
 from store_api.json_subject_dao import JSONSubjectDAO
-from store_api.subject_dto import Task
+from store_api.task_dto import Task
 import os
 import json
 

@@ -1,5 +1,5 @@
 from interfaces.SubjectDAO import SubjectDAO
-from store_api.subject_dto import Task
+from store_api.task_dto import Task
 import json
 import os
 
