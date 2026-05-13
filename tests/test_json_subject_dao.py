@@ -77,7 +77,7 @@ class TestJSONSubjectDao(unittest.TestCase):
 
         data = dao.get_task_data(subject, 'lab1')
         self.assertIsNotNone(data)
-        self.assertEqual(data['description'], 'just lab 1\n1. Create program\n2. Test it')
+        self.assertEqual(data.description, 'just lab 1\n1. Create program\n2. Test it')
 
         os.remove(subject_path)
         os.rmdir(db_path)

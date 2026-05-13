@@ -44,8 +44,8 @@ class JSONSubjectDAO(SubjectDAO):
         subject_path = f'{self.store}/{subject}.json'
         if os.path.exists(subject_path):
             with open(subject_path, 'r') as s:
-                data = json.load(s)  
-                return data[task]
+                data = json.load(s)[task]
+                return Task(task, data['description'], data['criteria'])
 
 
         
