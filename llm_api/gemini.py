@@ -19,7 +19,6 @@ class Gemini(LLMModel):
         self.sys_msg = sys_msg_template.to_string(
             role_descriprion=message_mock['role_descriprion'],
             task_description=message_mock['task_description'],
-            task_structure=message_mock['task_structure'],
             criteria=criteria,
             response_constrains=message_mock['response_constrains'],
             response_format=message_mock['response_format']
