@@ -69,13 +69,13 @@ class TestJSONSubjectDao(unittest.TestCase):
         db_path = './tests/db'
         subject = 'Алгоритми і структури даних'
         subject_path = f'{db_path}/{subject}.json'
-        task = Task('lab1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        task = Task('Завдання 1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
         dao = JSONSubjectDAO(db_path)
 
         dao.create_subject(subject)
         dao.create_task(task, subject)
 
-        data = dao.get_task_data(subject, 'lab1')
+        data = dao.get_task_data(subject, 'Завдання 1')
         self.assertIsNotNone(data)
         self.assertEqual(data.description, 'just lab 1\n1. Create program\n2. Test it')
 

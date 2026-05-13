@@ -18,14 +18,14 @@ class JSONSubjectDAO(SubjectDAO):
     def get_subject_data(self, name: str):
         subject_path = f'{self.store}/{name}.json'
         if os.path.exists(subject_path):
-            with open(subject_path, 'r') as s:
+            with open(subject_path, 'r', encoding='utf-8') as s:
                 data = json.load(s)  
                 return data
 
     def create_task(self, task_data: Task, subject: str):
         subject_path = f'{self.store}/{subject}.json'
         if os.path.exists(subject_path) and os.path.getsize != 0:
-            with open(subject_path, 'r') as t:
+            with open(subject_path, 'r', encoding='utf-8') as t:
                 try:
                     data = json.load(t)
                 except json.JSONDecodeError:
@@ -43,7 +43,7 @@ class JSONSubjectDAO(SubjectDAO):
     def get_task_data(self, subject: str, task: str):
         subject_path = f'{self.store}/{subject}.json'
         if os.path.exists(subject_path):
-            with open(subject_path, 'r') as s:
+            with open(subject_path, 'r', encoding='utf-8') as s:
                 data = json.load(s)[task]
                 return Task(task, data['description'], data['criteria'])
 
