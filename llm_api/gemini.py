@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from message_template_parts.sys_msg import sys_msg_template, message_mock
 from work_file_parsers.parser_factory import work_parser
+from store_api.task_dto import Task
 
 
 class Gemini(LLMModel):
@@ -13,18 +14,16 @@ class Gemini(LLMModel):
         self.client = genai.Client(api_key=GEM_API)
         self.model = model_name
 
-    def form_message(self, file, criteria):
-        criteria_parser = work_parser(criteria)
-        criteria = criteria_parser.get_parsed_data()
+    def form_message(self, subject_name: str, task_path: str, task_data: Task):
         self.sys_msg = sys_msg_template.to_string(
-            role_descriprion=message_mock['role_descriprion'],
-            task_description=message_mock['task_description'],
-            criteria=criteria,
+            role_descriprion=subject_name,
+            task_description=task_data.description,
+            criteria=task_data.criteria,
             response_constrains=message_mock['response_constrains'],
             response_format=message_mock['response_format']
         )
         
-        parser = work_parser(file)
+        parser = work_parser(task_path)
         self.usr_msg = parser.get_parsed_data()
 
     def make_request(self):
