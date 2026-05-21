@@ -82,7 +82,42 @@ class TestJSONSubjectDao(unittest.TestCase):
         os.remove(subject_path)
         os.rmdir(db_path)
 
+    def test_non_existent_subject(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        non_existent_subject = 'asdasdasada'
+        subject_path = f'{db_path}/{subject}.json'
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
 
+        with self.assertRaises(Exception):
+            dao.get_subject_data(non_existent_subject)
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
+
+    def test_non_existent_task(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        non_existent_subject = 'asdasdasada'
+        non_existent_task = 'Task asdasdasada'
+        task = Task('Завдання 1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        subject_path = f'{db_path}/{subject}.json'
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task, subject)
+
+        with self.assertRaises(Exception):
+            dao.get_task_data(subject, non_existent_task)
+
+        with self.assertRaises(Exception):
+            dao.get_task_data(non_existent_subject, non_existent_task)
+
+        with self.assertRaises(Exception):
+            dao.get_task_data(non_existent_subject, 'Завдання 1')
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
 
 if __name__ == '__main__':
     unittest.main()    

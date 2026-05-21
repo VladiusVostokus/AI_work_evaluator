@@ -21,6 +21,8 @@ class JSONSubjectDAO(SubjectDAO):
             with open(subject_path, 'r', encoding='utf-8') as s:
                 data = json.load(s)  
                 return data
+        else:
+            raise Exception("Subject doesn't exist")
 
     def create_task(self, task_data: Task, subject: str):
         subject_path = f'{self.store}/{subject}.json'
@@ -46,6 +48,8 @@ class JSONSubjectDAO(SubjectDAO):
             with open(subject_path, 'r', encoding='utf-8') as s:
                 data = json.load(s)[task]
                 return Task(task, data['description'], data['criteria'])
+        else:
+            raise Exception("Subject doesn't exist")
 
 
         
