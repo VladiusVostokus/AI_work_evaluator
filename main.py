@@ -6,12 +6,14 @@ import os
 
 store = 'jsondb'
 dao = JSONSubjectDAO(store)
-
 def create_subject():
     print("Введіть назву дисципліни:")
     subject = input()
-    dao.create_subject(subject)
-    print(f"Дисципліна {subject} успішно створена")
+    try:
+        dao.create_subject(subject)
+        print(f"Дисципліна {subject} успішно створена")
+    except Exception as e:
+        print(f"Помилка під час створення дисципліни {e}")
 
 def create_task():
     print("Оберіть дисципліну(вкажіть назву):")
@@ -30,8 +32,12 @@ def create_task():
     criteria = crit_parser.get_parsed_data()
 
     task = Task(task_name, description, criteria)
-    dao.create_task(task, subject)
-    print(f"Завдання {task_name} для дисципліни {subject} успішно створене")
+    try:
+        dao.create_task(task, subject)
+        print(f"Завдання {task_name} для дисципліни {subject} успішно створене")
+    except Exception as e:
+        print(f"Помилка під час створення завдання {e}")
+    
 
 def check_task():
     print("Оберіть дисципліну(вкажіть назву):")
@@ -47,10 +53,13 @@ def check_task():
     llm_name = input()
     llm = llm_api(llm_name)
     if llm != None:
-        task = dao.get_task_data(subject, task_name)
-        llm.form_message(subject, task_path, task)
-        llm.make_request()
-        print(llm.get_response())
+        try:
+            task = dao.get_task_data(subject, task_name)
+            llm.form_message(subject, task_path, task)
+            llm.make_request()
+            print(llm.get_response())
+        except Exception as e:
+            print(f"Помилка під час перевірки завдання {e}")
     else:
         print("Вказано не вірне ім'я моделі")
 
