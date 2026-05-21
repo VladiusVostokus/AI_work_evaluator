@@ -28,7 +28,9 @@ class JSONSubjectDAO(SubjectDAO):
 
     def create_task(self, task_data: Task, subject: str):
         subject_path = f'{self.store}/{subject}.json'
-        if os.path.exists(subject_path) and os.path.getsize != 0:
+        if not os.path.exists(subject_path):
+            raise Exception("Subject doesn't exist to create task")
+        if os.path.getsize != 0:
             with open(subject_path, 'r', encoding='utf-8') as t:
                 try:
                     data = json.load(t)
@@ -36,7 +38,7 @@ class JSONSubjectDAO(SubjectDAO):
                     data = {}
         else:
             data = {}
-            
+
         if task_data.name in data:
             raise Exception("Subject already exist")
         
