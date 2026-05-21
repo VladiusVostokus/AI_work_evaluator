@@ -14,6 +14,8 @@ class JSONSubjectDAO(SubjectDAO):
         if not os.path.exists(subject_path):
             with open(subject_path, 'w'):
                 pass
+        else:
+            raise Exception("Subject already exist")
         
     def get_subject_data(self, name: str):
         subject_path = f'{self.store}/{name}.json'
@@ -34,6 +36,9 @@ class JSONSubjectDAO(SubjectDAO):
                     data = {}
         else:
             data = {}
+            
+        if task_data.name in data:
+            raise Exception("Subject already exist")
         
         data[task_data.name] = {
                 'description': task_data.description,
