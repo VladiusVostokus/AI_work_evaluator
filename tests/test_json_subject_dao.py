@@ -236,6 +236,22 @@ class TestJSONSubjectDao(unittest.TestCase):
         os.remove(subject_path)
         os.rmdir(db_path)
 
+    def test_update_subject(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        updated_subject = 'Cтруктури даних і алгоритми'
+        task = Task('Завдання 1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        subject_path = f'{db_path}/{updated_subject}.json'
+
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task, subject)
+        dao.rename_subject(subject, updated_subject)
+
+        self.assertIsNotNone(dao.get_subject_data(updated_subject))
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
 
 if __name__ == '__main__':
     unittest.main()    

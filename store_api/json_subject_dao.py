@@ -26,6 +26,12 @@ class JSONSubjectDAO(SubjectDAO):
         else:
             raise Exception("Subject doesn't exist")
         
+    def rename_subject(self, name: str, new_name: str):
+        subject_path = f'{self.store}/{name}.json'
+        if os.path.exists(subject_path):
+            new_subject_path = f'{self.store}/{new_name}.json'
+            os.rename(subject_path, new_subject_path)
+        
     def delete_subject(self, subject: str):
         subject_path = f'{self.store}/{subject}.json'
         if os.path.exists(subject_path):
