@@ -272,6 +272,44 @@ class TestJSONSubjectDao(unittest.TestCase):
         os.remove(subject_path)
         os.rmdir(db_path)
         
+    def test_update_task_name_only(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        subject_path = f'{db_path}/{subject}.json'
+        task = Task('Завдання 1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        update_task = Task('Завдання 2', '', '')
+
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task, subject)
+        dao.update_task(subject, 'Завдання 1', update_task)
+
+        data = dao.get_task_data(subject, 'Завдання 2')
+        self.assertEqual(data.name, 'Завдання 2')
+        self.assertEqual(data.description, 'just lab 1\n1. Create program\n2. Test it')
+        self.assertEqual(data.criteria, '5 very well\n0 very bad')
+        os.remove(subject_path)
+        os.rmdir(db_path)
+
+    def test_update_task_descr_and_criteria_only(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        subject_path = f'{db_path}/{subject}.json'
+        task = Task('Завдання 1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        update_task = Task('', 'task 2', '5 - OMG!!!!, 0 - cringre')
+
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task, subject)
+        dao.update_task(subject, 'Завдання 1', update_task)
+
+        data = dao.get_task_data(subject, 'Завдання 1')
+        self.assertEqual(data.name, 'Завдання 1')
+        self.assertEqual(data.description, 'task 2')
+        self.assertEqual(data.criteria,'5 - OMG!!!!, 0 - cringre')
+        os.remove(subject_path)
+        os.rmdir(db_path)
+        
 
 if __name__ == '__main__':
     unittest.main()    
