@@ -76,10 +76,15 @@ class JSONSubjectDAO(SubjectDAO):
             task_data = {}
             with open(subject_path, 'r', encoding='utf-8') as t:
                 data = json.load(t)
-                data.pop(task)
-                task_data = data
+                if task not in data:
+                    raise Exception("Task delete error: Task doesn't exist")
+                else:
+                    data.pop(task)
+                    task_data = data
             with open(subject_path, 'w', encoding='utf-8') as t:
                 json.dump(task_data, t, ensure_ascii=False, indent=2)
+        else:
+            raise Exception("Task delete error: Subject doesn't exist")
                 
 
 
