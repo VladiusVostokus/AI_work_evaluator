@@ -76,6 +76,27 @@ class JSONSubjectDAO(SubjectDAO):
         else:
             raise Exception("Subject doesn't exist")
         
+    def update_task(self, subject: str, task: str, updated_task: Task):
+        subject_path = f'{self.store}/{subject}.json'
+        if os.path.exists(subject_path):
+            with open(subject_path, 'r', encoding='utf-8') as t:
+                data = json.load(t)
+                task_data = data[task]
+                if updated_task.criteria != '':
+                    task_data['criteria'] = updated_task.criteria
+                if updated_task.description != '':
+                    task_data['description'] = updated_task.description
+                if updated_task.name != '':
+                    data.pop(task)
+                    data[updated_task.name] = task_data
+                    with open(subject_path, 'w', encoding='utf-8') as t:
+                        json.dump(data, t, ensure_ascii=False, indent=2)
+                else:
+                    data[task] = task_data
+                    with open(subject_path, 'w', encoding='utf-8') as t:
+                        json.dump(data, t, ensure_ascii=False, indent=2)
+            
+ 
     def delete_task(self, subject: str, task: str):
         subject_path = f'{self.store}/{subject}.json'
         if os.path.exists(subject_path):
