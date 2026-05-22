@@ -309,6 +309,29 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data.criteria,'5 - OMG!!!!, 0 - cringre')
         os.remove(subject_path)
         os.rmdir(db_path)
+
+    def test_update_task_that_not_exits(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        non_existent_subject = 'asdasdasada'
+        subject_path = f'{db_path}/{subject}.json'
+        task = Task('Завдання 1','just lab 1\n1. Create program\n2. Test it', '5 very well\n0 very bad')
+        update_task = Task('', 'task 2', '5 - OMG!!!!, 0 - cringre')
+
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task, subject)
+        with self.assertRaises(Exception):
+            dao.update_task(subject, 'dasdasdad', update_task)
+
+        with self.assertRaises(Exception):
+            dao.update_task(non_existent_subject, 'Завдання 1', update_task)
+
+        with self.assertRaises(Exception):
+            dao.update_task(non_existent_subject, 'dasdasdad', update_task)
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
         
 
 if __name__ == '__main__':

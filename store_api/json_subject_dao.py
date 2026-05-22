@@ -81,6 +81,8 @@ class JSONSubjectDAO(SubjectDAO):
         if os.path.exists(subject_path):
             with open(subject_path, 'r', encoding='utf-8') as t:
                 data = json.load(t)
+                if task not in data:
+                    raise Exception("Task update error: task doesn't exist")
                 task_data = data[task]
                 if updated_task.criteria != '':
                     task_data['criteria'] = updated_task.criteria
@@ -95,6 +97,8 @@ class JSONSubjectDAO(SubjectDAO):
                     data[task] = task_data
                     with open(subject_path, 'w', encoding='utf-8') as t:
                         json.dump(data, t, ensure_ascii=False, indent=2)
+        else:
+            raise Exception("Task update error: subject doesn't exist")
             
  
     def delete_task(self, subject: str, task: str):
@@ -113,7 +117,3 @@ class JSONSubjectDAO(SubjectDAO):
         else:
             raise Exception("Task delete error: Subject doesn't exist")
                 
-
-
-
-        
