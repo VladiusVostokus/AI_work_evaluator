@@ -25,6 +25,10 @@ class JSONSubjectDAO(SubjectDAO):
                 return data
         else:
             raise Exception("Subject doesn't exist")
+        
+    def delete_subject(self, subject: str):
+        subject_path = f'{self.store}/{subject}.json'
+        os.remove(subject_path)
 
     def create_task(self, task_data: Task, subject: str):
         subject_path = f'{self.store}/{subject}.json'
