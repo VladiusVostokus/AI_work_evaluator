@@ -11,7 +11,7 @@ def create_subject():
     subject = input()
     try:
         dao.create_subject(subject)
-        print(f"Дисципліна {subject} успішно створена")
+        print(f"Дисципліна {subject} успішно створена\n")
     except Exception as e:
         print(f"Помилка під час створення дисципліни {e}")
 
@@ -43,7 +43,7 @@ def create_task():
     task = Task(task_name, description, criteria)
     try:
         dao.create_task(task, subject)
-        print(f"Завдання {task_name} для дисципліни {subject} успішно створене")
+        print(f"Завдання {task_name} для дисципліни {subject} успішно створене\n")
     except Exception as e:
         print(f"Помилка під час створення завдання {e}")
     
@@ -95,7 +95,7 @@ def rename_subject():
     new_name = input()
     try:
         dao.rename_subject(old_name, new_name)
-        print(f"Дисципліну {old_name} перейменовано в {new_name}")
+        print(f"Дисципліну {old_name} перейменовано в {new_name}\n")
     except Exception as e:
         print(f"Помилка під час перейменування дисципліни: {e}")
 
@@ -133,7 +133,7 @@ def update_task():
     task = Task(new_name, new_description, new_criteria)
     try:
         dao.update_task(subject, task_name, task)
-        print("Завдання успішно оновлене")
+        print("Завдання успішно оновлене\n")
     except Exception as e:
         print(f"Помилка під час оновлення дисципліни: {e}")
     
