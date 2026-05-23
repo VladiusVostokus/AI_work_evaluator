@@ -84,11 +84,29 @@ def exit_program():
     print("Завершення роботи програми")
     exit()
 
+def rename_subject():
+    print('Введіть назву дисципліни, яку хочете оновити')
+    old_name = input()
+    while (not dao.is_subject_exist(old_name)):
+        print(f"Дисципліни {old_name} не існує, введіть іншу назву, або q - щоб повернутися назад")
+        old_name = input()
+        if (old_name == 'q'): return
+    print('Введіть нову назву дисципліни')
+    new_name = input()
+    try:
+        dao.rename_subject(old_name, new_name)
+        print(f"Дисципліну {old_name} перейменовано в {new_name}")
+    except Exception as e:
+        print(f"Помилка під час перейменування дисципліни: {e}")
+
+    
+
 actions = {
     's': create_subject,
     't': create_task,
     'c': check_task,
-    'q': exit_program
+    'q': exit_program,
+    'rs': rename_subject,
 }
 
 if len(os.listdir(store)) == 0:
@@ -109,7 +127,12 @@ if len(os.listdir(store)) == 0:
     dao.create_task(task, subject_name)
 
 while(True):
-    print("Оберіть дію: s - створити дисципліну, t - створити завдання, c - перевірити завдання, q - зупинити роботу програми")
+    print("Оберіть дію:\n" \
+    "s - створити дисципліну\n" \
+    "t - створити завдання\n" \
+    "c - перевірити завдання\n" \
+    "rs - перейменувати дисципліну\n" \
+    "q - зупинити роботу програми")
     choise = input()
     if choise not in actions:
         print(f"{choise} некоректна дія, оберіть правильну дію")
