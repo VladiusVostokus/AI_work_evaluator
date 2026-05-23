@@ -21,7 +21,10 @@ class JSONSubjectDAO(SubjectDAO):
         subject_path = f'{self.store}/{name}.json'
         if os.path.exists(subject_path):
             with open(subject_path, 'r', encoding='utf-8') as s:
-                data = json.load(s)  
+                try:
+                    data = json.load(s) 
+                except:
+                    raise Exception("Subject is empty")
                 return data
         else:
             raise Exception("Subject doesn't exist")
