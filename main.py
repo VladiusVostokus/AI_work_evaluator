@@ -99,6 +99,43 @@ def rename_subject():
     except Exception as e:
         print(f"Помилка під час перейменування дисципліни: {e}")
 
+def update_task():
+    print("Введіть ім'я дисципліни:")
+    subject = input()
+    while (not dao.is_subject_exist(subject)):
+        print(f"Дисципліни {subject} не існує, введіть іншу назву, або q - щоб повернутися назад")
+        subject = input()
+        if (subject == 'q'): return
+
+    print("Оберіть завдання, яке хочете оновити (вкажіть назву):")
+    task_name = input()
+    while (not dao.is_task_exist(subject, task_name)):
+        print(f"Завдання {task_name} не існує, введіть іншу назву, або q - щоб повернутися назад")
+        task_name = input()
+        if (task_name == 'q'): return
+
+    print("Введіть нове ім'я завдання, або натисніть Enter, якщо не хочете міняти назву")
+    new_name = input()
+    print("Вкажіть шлях до файлу нового опису завдання, або натисніть Enter, якщо не хочете міняти")
+    new_descr_path = input()
+    if new_descr_path != "":
+        desc_parser = work_parser(new_descr_path)
+        new_description = desc_parser.get_parsed_data()
+    else: new_description = ''
+
+    print("Вкажіть шлях до файлу нових критеріїв завдання, або натисніть Enter, якщо не хочете міняти")
+    new_crit_path = input()
+    if new_crit_path != "":
+        crit_parser = work_parser(new_crit_path)
+        new_criteria = crit_parser.get_parsed_data()
+    else: new_criteria = ''
+
+    task = Task(new_name, new_description, new_criteria)
+    try:
+        dao.update_task(subject, task_name, task)
+        print("Завдання успішно оновлене")
+    except Exception as e:
+        print(f"Помилка під час оновлення дисципліни: {e}")
     
 
 actions = {
@@ -107,6 +144,7 @@ actions = {
     'c': check_task,
     'q': exit_program,
     'rs': rename_subject,
+    'ut': update_task,
 }
 
 if len(os.listdir(store)) == 0:
@@ -132,6 +170,7 @@ while(True):
     "t - створити завдання\n" \
     "c - перевірити завдання\n" \
     "rs - перейменувати дисципліну\n" \
+    "ut - оновити завдання\n" \
     "q - зупинити роботу програми")
     choise = input()
     if choise not in actions:
