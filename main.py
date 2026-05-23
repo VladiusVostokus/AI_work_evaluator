@@ -18,8 +18,17 @@ def create_subject():
 def create_task():
     print("Оберіть дисципліну(вкажіть назву):")
     subject = input()
+    while (not dao.is_subject_exist(subject)):
+        print(f"Дисципліни {subject} не існує, введіть іншу назву, або q - щоб повернутися назад")
+        subject = input()
+        if (subject == 'q'): return
+
     print("Введіть ім'я завдання(вкажіть назву):")
     task_name = input()
+    while (dao.is_subject_exist(subject)):
+        print(f"Завдання {task_name} вже існує, введіть іншу назву, або q - щоб повернутися назад")
+        task_name = input()
+        if (task_name == 'q'): return
     print("Додайте опис завдання(вкажіть шлях до файлу):")
     description_path = input()
 
@@ -42,9 +51,17 @@ def create_task():
 def check_task():
     print("Оберіть дисципліну(вкажіть назву):")
     subject = input()
+    while (not dao.is_subject_exist(subject)):
+        print(f"Дисципліни {subject} не існує, введіть іншу назву, або q - щоб повернутися назад")
+        subject = input()
+        if (subject == 'q'): return
 
     print("Оберіть завдання для перевірки(вкажіть назву):")
     task_name = input()
+    while (not dao.is_task_exist(subject, task_name)):
+        print(f"Завдання {task_name} не існує, введіть іншу назву, або q - щоб повернутися назад")
+        task_name = input()
+        if (task_name == 'q'): return
 
     print("Введіть шлях до файлу роботи:")
     task_path = input()
