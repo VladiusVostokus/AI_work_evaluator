@@ -126,7 +126,10 @@ class JSONSubjectDAO(SubjectDAO):
     def is_task_exist(self, subject: str, task: str):
         subject_path = f'{self.store}/{subject}.json'
         with open(subject_path, 'r', encoding='utf-8') as t:
-            data = json.load(t)
+            try:
+                data = json.load(t)
+            except:
+                return False
             if task in data:
                 return True
             return False
