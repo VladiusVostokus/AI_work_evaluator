@@ -116,4 +116,9 @@ class JSONSubjectDAO(SubjectDAO):
                 json.dump(task_data, t, ensure_ascii=False, indent=2)
         else:
             raise Exception("Task delete error: Subject doesn't exist")
-                
+        
+    def is_subject_exist(self, subject: str) -> bool:
+        subject_path = f'{self.store}/{subject}.json'
+        if os.path.exists(subject_path):
+            return True
+        return False

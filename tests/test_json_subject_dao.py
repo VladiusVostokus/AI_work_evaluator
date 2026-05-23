@@ -332,7 +332,21 @@ class TestJSONSubjectDao(unittest.TestCase):
 
         os.remove(subject_path)
         os.rmdir(db_path)
-        
+
+    def test_is_subject_exist(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        non_existent_subject = 'asdasdasada'
+        subject_path = f'{db_path}/{subject}.json'
+
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+
+        self.assertTrue(dao.is_subject_exist(subject))
+        self.assertFalse(dao.is_subject_exist(non_existent_subject))
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
 
 if __name__ == '__main__':
     unittest.main()    
