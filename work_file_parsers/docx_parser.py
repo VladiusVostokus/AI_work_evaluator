@@ -6,9 +6,12 @@ from docx.table import Table
 from docx.oxml.text.paragraph import CT_P
 from docx.oxml.table import CT_Tbl
 from utils.mark_table_bounds import mark_table_bounds
+import os
 
 class DocxParser(WorkParser):
     def __init__(self, filename):
+        if not os.path.exists(filename):
+            raise Exception("Файлу не існує")
         self.file = filename
 
     def __generate_doc_objects(self, doc):

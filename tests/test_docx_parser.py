@@ -38,5 +38,10 @@ class TestDocxParser(unittest.TestCase):
         result_table = 'Some text\n\n===TABLE START===\n| 1 | 2 | 3 |\n| --- | --- | --- |\n| 4 | 5 | 6 |\n| 7 | 8 | 9 |\n===TABLE END===\n\nSome text 2\n\n'
         self.assertEqual(parsed_data, result_table)
 
+    def test_file_that_not_exist(self):
+        file = 'unexistent/file.docx'
+        with self.assertRaises(Exception):
+            parser = DocxParser(file)
+
 if __name__ == '__main__':
     unittest.main()
