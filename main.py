@@ -25,7 +25,7 @@ def create_task():
 
     print("Введіть ім'я завдання(вкажіть назву):")
     task_name = input()
-    while (dao.is_subject_exist(subject)):
+    while (dao.is_task_exist(subject, task_name)):
         print(f"Завдання {task_name} вже існує, введіть іншу назву, або q - щоб повернутися назад")
         task_name = input()
         if (task_name == 'q'): return
