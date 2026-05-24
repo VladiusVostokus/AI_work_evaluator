@@ -31,12 +31,11 @@ def create_task():
         if (task_name == 'q'): return
     print("Додайте опис завдання(вкажіть шлях до файлу):")
     description_path = input()
+    desc_parser = work_parser(description_path)
+    description = desc_parser.get_parsed_data()
 
     print("Додайте критерії оцінювання(вкажіть шлях до файлу):")
     criteria_path = input()
-
-    desc_parser = work_parser(description_path)
-    description = desc_parser.get_parsed_data()
     crit_parser = work_parser(criteria_path)
     criteria = crit_parser.get_parsed_data()
 
