@@ -1,7 +1,10 @@
 from llm_api.gemini import Gemini
+from llm_api.mistral import MistralAi
 
 models = {
     "gemini-3-flash-preview": Gemini,
+    "mistral-medium-latest": MistralAi,
+    "mistral-large-latest": MistralAi,
 }
 
 def llm_api(model_name):
