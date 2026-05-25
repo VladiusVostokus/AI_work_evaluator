@@ -35,7 +35,8 @@ def create_task():
     description: str
     criteria: str
     while(not os.path.exists(description_path)):
-        print(f"Файлу з описом {description_path} не існує, введіть інший шлях, або q - щоб повернутися назад")
+        print(f"Файлу з описом {description_path} не існує, введіть інший шлях, або" \
+               "q - щоб повернутися назад чи натисніть Enter, якщо не хочете міняти")
         description_path = input()
         if (description_path) == 'q': return
     desc_parser = work_parser(description_path)
@@ -134,6 +135,12 @@ def update_task():
     new_name = input()
     print("Вкажіть шлях до файлу нового опису завдання, або натисніть Enter, якщо не хочете міняти")
     new_descr_path = input()
+    while((not os.path.exists(new_descr_path)) and new_descr_path != ""):
+        print(f"Файлу з описом {new_descr_path} не існує, введіть інший шлях, або" \
+               "q - щоб повернутися назад чи натисніть Enter, якщо не хочете міняти")
+        new_descr_path = input()
+        if (new_descr_path) == 'q': return
+
     if new_descr_path != "":
         desc_parser = work_parser(new_descr_path)
         new_description = desc_parser.get_parsed_data()
@@ -141,6 +148,12 @@ def update_task():
 
     print("Вкажіть шлях до файлу нових критеріїв завдання, або натисніть Enter, якщо не хочете міняти")
     new_crit_path = input()
+    while((not os.path.exists(new_crit_path)) and new_crit_path != ""):
+        print(f"Файлу з критеріями {new_crit_path} не існує, введіть інший шлях, або" \
+               "q - щоб повернутися назад чи натисніть Enter, якщо не хочете міняти")
+        new_crit_path = input()
+        if (new_crit_path) == 'q': return
+
     if new_crit_path != "":
         crit_parser = work_parser(new_crit_path)
         new_criteria = crit_parser.get_parsed_data()
