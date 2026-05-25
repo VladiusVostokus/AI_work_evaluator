@@ -1,6 +1,4 @@
 from ollama import chat
-from ollama import ChatResponse
-from dotenv import load_dotenv, dotenv_values
 from message_template_parts.sys_msg import sys_msg_template, message_mock, response_format2
 from interfaces.llm_model import LLMModel
 from work_file_parsers.parser_factory import work_parser
