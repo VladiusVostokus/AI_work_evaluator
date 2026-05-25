@@ -6,6 +6,7 @@ import os
 
 store = 'jsondb'
 dao = JSONSubjectDAO(store)
+
 def create_subject():
     print("Введіть назву дисципліни:")
     subject = input()
@@ -31,11 +32,22 @@ def create_task():
         if (task_name == 'q'): return
     print("Додайте опис завдання(вкажіть шлях до файлу):")
     description_path = input()
+    description: str
+    criteria: str
+    while(not os.path.exists(description_path)):
+        print(f"Файлу з описом {description_path} не існує, введіть інший шлях, або q - щоб повернутися назад")
+        description_path = input()
+        if (description_path) == 'q': return
     desc_parser = work_parser(description_path)
     description = desc_parser.get_parsed_data()
 
     print("Додайте критерії оцінювання(вкажіть шлях до файлу):")
     criteria_path = input()
+    while(not os.path.exists(criteria_path)):
+        print(f"Файлу з критеріями {criteria_path} не існує, введіть інший шлях, або q - щоб повернутися назад")
+        criteria_path = input()
+        if (criteria_path) == 'q': return
+    
     crit_parser = work_parser(criteria_path)
     criteria = crit_parser.get_parsed_data()
 
@@ -45,6 +57,7 @@ def create_task():
         print(f"Завдання {task_name} для дисципліни {subject} успішно створене\n")
     except Exception as e:
         print(f"Помилка під час створення завдання {e}")
+        return
     
 
 def check_task():
@@ -64,6 +77,10 @@ def check_task():
 
     print("Введіть шлях до файлу роботи:")
     task_path = input()
+    while(not os.path.exists(task_path)):
+        print(f"Файлу із завданням {task_path} не існує, введіть інший шлях, або q - щоб повернутися назад")
+        task_path = input()
+        if (task_path) == 'q': return
 
     print("Введіть ім'я мовної моделі, яку хочете використати:")
     llm_name = input()
@@ -177,4 +194,3 @@ while(True):
         continue
     action = actions[choise]
     action()
-    
