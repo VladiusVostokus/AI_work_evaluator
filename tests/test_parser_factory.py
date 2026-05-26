@@ -5,12 +5,12 @@ from work_file_parsers.docx_parser import DocxParser
 
 class TestParserFactory(unittest.TestCase):
     def test_pdf(self):
-        filename = 'somedir/somefile.pdf'
+        filename = 'tests/files/criteria.pdf'
         parser = work_parser(filename)
         self.assertEqual(type(parser), PdfParser)
 
     def test_docx(self):
-        filename = 'somedir/somefile.docx'
+        filename = 'tests/files/file1.docx'
         parser = work_parser(filename)
         self.assertEqual(type(parser), DocxParser)
 
