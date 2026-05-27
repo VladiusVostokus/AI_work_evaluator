@@ -5,3 +5,5 @@ __pycache__
 tests/test_llm_api_factory.py
 /*.docx
 jsondb
+credentials.json
+token.json
