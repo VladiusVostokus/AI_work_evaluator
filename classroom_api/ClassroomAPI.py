@@ -33,4 +33,16 @@ class ClassroomAPI:
     def get_servises(self):
         return self.servise
     
+    def get_subjects(self):
+        response = (self.servise['classroom'].courses()
+                    .list(teacherId="me", courseStates=["ACTIVE"])
+                    .execute()
+        )
+        courses = response.get("courses", [])
+        result = []
+        for course in courses:
+            result.append(course['name'])
+        return result
+                        
+    
 
