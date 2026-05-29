@@ -5,6 +5,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from store_api.task_dto import Task
 
 class ClassroomAPI:
     def __init__(self, SCOPES: list, credentials: str, token_json: str):
@@ -41,7 +42,7 @@ class ClassroomAPI:
         courses = response.get("courses", [])
         result = []
         for course in courses:
-            result.append(course['name'])
+            result.append([course['name'], course['id']])
         return result
     
     def get_all_tasks(self):
@@ -59,8 +60,9 @@ class ClassroomAPI:
                     .execute()
             )
             tasks = task_response.get("courseWork", [])
-            for task in tasks:
-                result.append(task['title'])
+            for t in tasks:
+                task = Task(t['title'], t.get('description',''), '')
+                result.append(task)
         return result
 
                         
