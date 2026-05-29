@@ -43,6 +43,26 @@ class ClassroomAPI:
         for course in courses:
             result.append(course['name'])
         return result
+    
+    def get_all_tasks(self):
+        response = (self.servise['classroom'].courses()
+                    .list(teacherId="me", courseStates=["ACTIVE"])
+                    .execute()
+        )
+        result = []
+        courses = response.get("courses", [])
+        for cousre in courses:
+            course_id = cousre['id']
+            task_response = (self.servise['classroom'].courses()
+                    .courseWork()
+                    .list(courseId=course_id)
+                    .execute()
+            )
+            tasks = task_response.get("courseWork", [])
+            for task in tasks:
+                result.append(task['title'])
+        return result
+
                         
     
 

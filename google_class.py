@@ -7,7 +7,10 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/classroom.courses.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/classroom.courses.readonly", 
+                  "https://www.googleapis.com/auth/classroom.coursework.students",
+                   "https://www.googleapis.com/auth/drive.readonly"
+        ]
 
 
 def main():
