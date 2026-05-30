@@ -1,11 +1,13 @@
 import os.path
-
+import io
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from store_api.task_dto import Task
+from googleapiclient.http import MediaIoBaseDownload
+from work_file_parsers.docx_parser import DocxParser
 
 class ClassroomAPI:
     def __init__(self, SCOPES: list, credentials: str, token_json: str):
@@ -45,6 +47,18 @@ class ClassroomAPI:
             result.append([course['name'], course['id']])
         return result
     
+    def __download_files(self, ids: list):
+        for id in ids:
+            request = self.servise['drive'].files().get_media(fileId=id)
+            file_handler = io.BytesIO()
+            downloader = MediaIoBaseDownload(file_handler, request)
+            done = False
+            while not done:
+                done = downloader.next_chunk()
+                with open(f'{id}.docx', 'wb') as f:
+                    f.write(file_handler.getvalue())
+
+    
     def get_all_tasks(self):
         response = (self.servise['classroom'].courses()
                     .list(teacherId="me", courseStates=["ACTIVE"])
@@ -62,10 +76,21 @@ class ClassroomAPI:
             )
             tasks = task_response.get("courseWork", [])
             for t in tasks:
-                task = Task(t['title'], t.get('description',''), '')
+                description = t.get('description','')
+                if 'materials' in t:
+                    ids = []
+                    for material in t['materials']:
+                        if 'driveFile' in material:
+                            print(material)
+                            file_data = material['driveFile']['driveFile']
+                            ids.append(file_data['id'])
+                    if len(ids) > 0:
+                        self.__download_files(ids)
+                        for id in ids:
+                            parser = DocxParser(f'{id}.docx')
+                            data = parser.get_parsed_data()
+                            description += '\n' + data
+                task = Task(t['title'], description, '')
                 result[cousre['name']].append(task)
         return result
-
                         
-    
-
