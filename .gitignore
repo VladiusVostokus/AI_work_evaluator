@@ -4,6 +4,7 @@ __pycache__
 *.bat
 tests/test_llm_api_factory.py
 tests/test_classroom_api.py
+tests/test_jsondb_and_classroom.py
 /*.docx
 jsondb
 credentials.json

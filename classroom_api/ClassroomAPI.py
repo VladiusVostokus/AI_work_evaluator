@@ -50,10 +50,11 @@ class ClassroomAPI:
                     .list(teacherId="me", courseStates=["ACTIVE"])
                     .execute()
         )
-        result = []
+        result = {}
         courses = response.get("courses", [])
         for cousre in courses:
             course_id = cousre['id']
+            result[cousre['name']] = []
             task_response = (self.servise['classroom'].courses()
                     .courseWork()
                     .list(courseId=course_id)
@@ -62,7 +63,7 @@ class ClassroomAPI:
             tasks = task_response.get("courseWork", [])
             for t in tasks:
                 task = Task(t['title'], t.get('description',''), '')
-                result.append(task)
+                result[cousre['name']].append(task)
         return result
 
                         
