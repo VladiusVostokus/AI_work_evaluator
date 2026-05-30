@@ -136,3 +136,12 @@ class JSONSubjectDAO(SubjectDAO):
             if task in data:
                 return True
             return False
+        
+    def fill_db(self, classroom_data: dict):
+        try:
+            for subject in classroom_data:
+                self.create_subject(subject)
+                for task in classroom_data[subject]:
+                    self.create_task(task, subject)
+        except:
+            raise Exception("Error while importing data")
