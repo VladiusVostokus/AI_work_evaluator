@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from store_api.task_dto import Task
 from googleapiclient.http import MediaIoBaseDownload
-from work_file_parsers.docx_parser import DocxParser
+from work_file_parsers.parser_factory import work_parser
 
 class ClassroomAPI:
     def __init__(self, SCOPES: list, credentials: str, token_json: str):
@@ -47,7 +47,7 @@ class ClassroomAPI:
             result.append([course['name'], course['id']])
         return result
     
-    def __download_files(self, ids: list):
+    def __download_files(self, ids: dict):
         for id in ids:
             request = self.servise['drive'].files().get_media(fileId=id)
             file_handler = io.BytesIO()
@@ -55,12 +55,14 @@ class ClassroomAPI:
             done = False
             while not done:
                 done = downloader.next_chunk()
-                with open(f'{id}.docx', 'wb') as f:
+                file_name = ids[id]
+                with open(f'{id}{file_name}', 'wb') as f:
                     f.write(file_handler.getvalue())
 
     def __delete_temp_files(self, ids: list):
         for id in ids:
-            os.remove(f'{id}.docx')
+            file_name = ids[id]
+            os.remove(f'{id}{file_name}')
     
     def get_all_tasks(self):
         response = (self.servise['classroom'].courses()
@@ -81,16 +83,17 @@ class ClassroomAPI:
             for t in tasks:
                 description = t.get('description','')
                 if 'materials' in t:
-                    ids = []
+                    ids = {}
                     for material in t['materials']:
                         if 'driveFile' in material:
                             print(material)
                             file_data = material['driveFile']['driveFile']
-                            ids.append(file_data['id'])
+                            ids[file_data['id']] = file_data['title']
                     if len(ids) > 0:
                         self.__download_files(ids)
                         for id in ids:
-                            parser = DocxParser(f'{id}.docx')
+                            file_name = ids[id]
+                            parser = work_parser(f'{id}{file_name}')
                             data = parser.get_parsed_data()
                             description += '\n' + data
                         self.__delete_temp_files(ids)
