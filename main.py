@@ -169,17 +169,24 @@ def update_task():
         print(f"Помилка під час оновлення дисципліни: {e}")
 
 def update_db(classroom=classroom_api):
-    print("Оновлення бази додасть дисципліни і завдання, яких не було і може оновити описи існуючих дисциплін"\
-          "натисніть y щоб підтвердити оновлення, або Enter чи будь який символ крім у, щоб відмінити дію")
+    print("Оновлення бази додасть дисципліни і завдання, яких не було і може оновити завдання існуючих дисциплін"\
+          "введіть y щоб підтвердити оновлення, " \
+          "n - не оновлювати існуючі завдання, додати лише нові, " \
+          "q чи будь що інше, щоб відмінити дію")
     confirm = input()
-    if confirm == 'y':
-        try:
-            if classroom is None:
-                classroom = build_classroom()
-            data = classroom.get_all_tasks()
+    if confirm == 'q':
+        return
+    try:
+        if classroom is None:
+            classroom = build_classroom()
+        data = classroom.get_all_tasks()
+        if confirm == 'y':
             dao.fill_db(data)
-        except Exception as e:
-            print(f"Помилка під час оновлення бази: {e}")
+        elif confirm == 'n':
+            dao.fill_db(data, True)
+        print("База даних успішно оновлена\n")
+    except Exception as e:
+         print(f"Помилка під час оновлення бази: {e}")
     
 actions = {
     's': create_subject,
