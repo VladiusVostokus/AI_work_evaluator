@@ -137,7 +137,7 @@ class JSONSubjectDAO(SubjectDAO):
                 return True
             return False
         
-    def fill_db(self, classroom_data: dict):
+    def fill_db(self, classroom_data: dict, not_update_tasks: bool = False):
         try:
             for subject in classroom_data:
                 if not self.is_subject_exist(subject):
@@ -146,6 +146,9 @@ class JSONSubjectDAO(SubjectDAO):
                     if not self.is_task_exist(subject, task.name):
                         self.create_task(task, subject)
                     else:
+                        if not_update_tasks:
+                            continue
                         self.update_task(subject, task.name, task)
+
         except:
             raise Exception("Error while importing data")

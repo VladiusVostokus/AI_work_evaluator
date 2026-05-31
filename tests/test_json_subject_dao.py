@@ -410,6 +410,47 @@ class TestJSONSubjectDao(unittest.TestCase):
         os.remove(subject_path2)
         os.rmdir(db_path)
 
+    def test_add_only_new_tasks(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        subject_path = f'{db_path}/{subject}.json'
+        task1 = Task('Завдання 1','just lab 1\n1. Create program 1\n2. Test it', '1 very well\n0 very bad')
+        updated_task1 = Task('Завдання 1','just lab 1!!!\n1. Create program 1\n2. Test it', '1 very well\n0 very bad')
+        task2 = Task('Завдання 2','just lab 2\n1. Create program 2\n2. Test it', '2 very well\n0 very bad ')
+        classroom_data = {
+            subject: [updated_task1, task2],
+        }
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task1, subject)
+        dao.fill_db(classroom_data, True)
+        data = dao.get_subject_data(subject)
+        self.assertEqual(data['Завдання 1']['description'], 'just lab 1\n1. Create program 1\n2. Test it')
+        self.assertEqual(data['Завдання 2']['description'], 'just lab 2\n1. Create program 2\n2. Test it')
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
+
+    def test_update_task_when_fill_db(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        subject_path = f'{db_path}/{subject}.json'
+        task1 = Task('Завдання 1','just lab 1\n1. Create program 1\n2. Test it', '1 very well\n0 very bad')
+        updated_task1 = Task('Завдання 1','just lab 1!!!\n1. Create program 1\n2. Test it', '1 very well\n0 very bad')
+        task2 = Task('Завдання 2','just lab 2\n1. Create program 2\n2. Test it', '2 very well\n0 very bad ')
+        classroom_data = {
+            subject: [updated_task1, task2],
+        }
+        dao = JSONSubjectDAO(db_path)
+        dao.create_subject(subject)
+        dao.create_task(task1, subject)
+        dao.fill_db(classroom_data)
+        data = dao.get_subject_data(subject)
+        self.assertEqual(data['Завдання 1']['description'], 'just lab 1!!!\n1. Create program 1\n2. Test it')
+        self.assertEqual(data['Завдання 2']['description'], 'just lab 2\n1. Create program 2\n2. Test it')
+
+        os.remove(subject_path)
+        os.rmdir(db_path)
 
 if __name__ == '__main__':
     unittest.main()    
