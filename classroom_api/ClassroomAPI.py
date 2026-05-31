@@ -1,4 +1,4 @@
-import os.path
+import os
 import io
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -58,6 +58,9 @@ class ClassroomAPI:
                 with open(f'{id}.docx', 'wb') as f:
                     f.write(file_handler.getvalue())
 
+    def __delete_temp_files(self, ids: list):
+        for id in ids:
+            os.remove(f'{id}.docx')
     
     def get_all_tasks(self):
         response = (self.servise['classroom'].courses()
@@ -90,6 +93,7 @@ class ClassroomAPI:
                             parser = DocxParser(f'{id}.docx')
                             data = parser.get_parsed_data()
                             description += '\n' + data
+                        self.__delete_temp_files(ids)
                 task = Task(t['title'], description, '')
                 result[cousre['name']].append(task)
         return result
