@@ -136,7 +136,22 @@ class JSONSubjectDAO(SubjectDAO):
             if task in data:
                 return True
             return False
-        
+
+    def make_backup(self):
+        subjects = [f.replace('.json','') for f in os.listdir(self.store)]
+        backup_data = {}
+        for subject in subjects:
+            subject_data = self.get_subject_data(subject)
+            backup_data[subject] = subject_data
+        return backup_data
+
+    def load_backup(self, backup_data: dict):
+        for subject in backup_data:
+            subject_data = backup_data[subject]
+            subject_path = f'{self.store}/{subject}.json'
+            with open(subject_path, 'w', encoding='utf-8') as s:
+                json.dump(subject_data, s, ensure_ascii=False, indent=2)
+ 
     def fill_db(self, classroom_data: dict, not_update_tasks: bool = False):
         try:
             for subject in classroom_data:
@@ -149,6 +164,5 @@ class JSONSubjectDAO(SubjectDAO):
                         if not_update_tasks:
                             continue
                         self.update_task(subject, task.name, task)
-
         except:
             raise Exception("Error while importing data")

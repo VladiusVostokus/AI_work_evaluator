@@ -452,5 +452,40 @@ class TestJSONSubjectDao(unittest.TestCase):
         os.remove(subject_path)
         os.rmdir(db_path)
 
+    def test_backup_db(self):
+        db_path = './tests/db'
+        subject1 = 'Алгоритми і структури даних'
+        subject2 = 'Основи IoT'
+        subject_path1 = f'{db_path}/{subject1}.json'
+        subject_path2 = f'{db_path}/{subject2}.json'
+        task1 = Task('Завдання 1','just lab 1\n1. Create program 1\n2. Test it', '1 very well\n0 very bad')
+        task2 = Task('Завдання 2','just lab 2\n1. Create program 2\n2. Test it', '2 very well\n0 very bad ')
+        task3 = Task('Завдання 3','just lab 3\n1. Create program 3\n2. Test it', '3 very well\n0 very bad')
+        task4 = Task('Завдання 4','just lab 4\n1. Create program 4\n2. Test it', '4 very well\n0 very bad')
+        updated_task1 = Task('Завдання 1','Some corrucped data', 'corrupted criteria')
+        updated_task4 = Task('Завдання 4','Some corrucped data', 'corrupted criteria')
+        classroom_data = {
+            subject1: [task1, task2],
+            subject2: [task3, task4]
+        }
+        dao = JSONSubjectDAO(db_path)
+        dao.fill_db(classroom_data)
+        backup_data = dao.make_backup()
+        dao.update_task(subject1, 'Завдання 1', updated_task1)
+        dao.update_task(subject2, 'Завдання 4', updated_task4)
+
+        dao.load_backup(backup_data)
+        data1 = dao.get_subject_data(subject1)
+        data2 = dao.get_subject_data(subject2)
+        self.assertEqual(data1['Завдання 1']['description'], 'just lab 1\n1. Create program 1\n2. Test it')
+        self.assertEqual(data1['Завдання 2']['description'], 'just lab 2\n1. Create program 2\n2. Test it')
+        self.assertEqual(data2['Завдання 3']['description'], 'just lab 3\n1. Create program 3\n2. Test it')
+        self.assertEqual(data2['Завдання 4']['description'], 'just lab 4\n1. Create program 4\n2. Test it')
+
+        os.remove(subject_path1)
+        os.remove(subject_path2)
+        os.rmdir(db_path)
+
+
 if __name__ == '__main__':
     unittest.main()    
