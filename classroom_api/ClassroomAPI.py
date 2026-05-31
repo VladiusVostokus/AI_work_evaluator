@@ -86,7 +86,6 @@ class ClassroomAPI:
                     ids = {}
                     for material in t['materials']:
                         if 'driveFile' in material:
-                            print(material)
                             file_data = material['driveFile']['driveFile']
                             ids[file_data['id']] = file_data['title']
                     if len(ids) > 0:
