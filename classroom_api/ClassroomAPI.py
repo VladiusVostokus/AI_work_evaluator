@@ -37,24 +37,30 @@ class ClassroomAPI:
         return self.servise
     
     def get_subjects(self):
-        response = (self.servise['classroom'].courses()
+        try:
+            response = (self.servise['classroom'].courses()
                     .list(teacherId="me", courseStates=["ACTIVE"])
                     .execute()
-        )
-        courses = response.get("courses", [])
-        return courses
+            )
+            courses = response.get("courses", [])
+            return courses
+        except HttpError as e:
+            print(f"Error while get subjects: {e}")
     
     def __download_files(self, ids: dict):
-        for id in ids:
-            request = self.servise['drive'].files().get_media(fileId=id)
-            file_handler = io.BytesIO()
-            downloader = MediaIoBaseDownload(file_handler, request)
-            done = False
-            while not done:
-                done = downloader.next_chunk()
-                file_name = ids[id]
-                with open(f'{id}{file_name}', 'wb') as f:
-                    f.write(file_handler.getvalue())
+        try:
+            for id in ids:
+                request = self.servise['drive'].files().get_media(fileId=id)
+                file_handler = io.BytesIO()
+                downloader = MediaIoBaseDownload(file_handler, request)
+                done = False
+                while not done:
+                    done = downloader.next_chunk()
+                    file_name = ids[id]
+                    with open(f'{id}{file_name}', 'wb') as f:
+                        f.write(file_handler.getvalue())
+        except HttpError as e:
+            print(f"Error while downloading files: {e}")
 
     def __delete_temp_files(self, ids: list):
         for id in ids:
@@ -62,34 +68,37 @@ class ClassroomAPI:
             os.remove(f'{id}{file_name}')
     
     def get_all_tasks(self):
-        courses = self.get_subjects()
-        result = {}
-        for cousre in courses:
-            course_id = cousre['id']
-            result[cousre['name']] = []
-            task_response = (self.servise['classroom'].courses()
+        try:
+            courses = self.get_subjects()
+            result = {}
+            for cousre in courses:
+                course_id = cousre['id']
+                result[cousre['name']] = []
+                task_response = (self.servise['classroom'].courses()
                     .courseWork()
                     .list(courseId=course_id)
                     .execute()
-            )
-            tasks = task_response.get("courseWork", [])
-            for t in tasks:
-                description = t.get('description','')
-                if 'materials' in t:
-                    ids = {}
-                    for material in t['materials']:
-                        if 'driveFile' in material:
-                            file_data = material['driveFile']['driveFile']
-                            ids[file_data['id']] = file_data['title']
-                    if len(ids) > 0:
-                        self.__download_files(ids)
-                        for id in ids:
-                            file_name = ids[id]
-                            parser = work_parser(f'{id}{file_name}')
-                            data = parser.get_parsed_data()
-                            description += '\n' + data
-                        self.__delete_temp_files(ids)
-                task = Task(t['title'], description, '')
-                result[cousre['name']].append(task)
-        return result
+                )
+                tasks = task_response.get("courseWork", [])
+                for t in tasks:
+                    description = t.get('description','')
+                    if 'materials' in t:
+                        ids = {}
+                        for material in t['materials']:
+                            if 'driveFile' in material:
+                                file_data = material['driveFile']['driveFile']
+                                ids[file_data['id']] = file_data['title']
+                        if len(ids) > 0:
+                            self.__download_files(ids)
+                            for id in ids:
+                                file_name = ids[id]
+                                parser = work_parser(f'{id}{file_name}')
+                                data = parser.get_parsed_data()
+                                description += '\n' + data
+                            self.__delete_temp_files(ids)
+                    task = Task(t['title'], description, '')
+                    result[cousre['name']].append(task)
+            return result
+        except HttpError as e:
+            print(f"Error while getting classroom tasks: {e}")
                         
