@@ -27,8 +27,11 @@ class ClassroomAPI:
                 token.write(self.creds.to_json())
 
     def build_servise(self, servise_name: str, version: str):
-        servise = build(servise_name, version, credentials=self.creds)
-        self.servise[servise_name] = servise
+        try:
+            servise = build(servise_name, version, credentials=self.creds)
+            self.servise[servise_name] = servise
+        except Exception as e:
+            print("Error while build servise", e)
 
     def get_servises(self):
         return self.servise
@@ -39,10 +42,7 @@ class ClassroomAPI:
                     .execute()
         )
         courses = response.get("courses", [])
-        result = []
-        for course in courses:
-            result.append([course['name'], course['id']])
-        return result
+        return courses
     
     def __download_files(self, ids: dict):
         for id in ids:
@@ -62,12 +62,8 @@ class ClassroomAPI:
             os.remove(f'{id}{file_name}')
     
     def get_all_tasks(self):
-        response = (self.servise['classroom'].courses()
-                    .list(teacherId="me", courseStates=["ACTIVE"])
-                    .execute()
-        )
+        courses = self.get_subjects()
         result = {}
-        courses = response.get("courses", [])
         for cousre in courses:
             course_id = cousre['id']
             result[cousre['name']] = []
