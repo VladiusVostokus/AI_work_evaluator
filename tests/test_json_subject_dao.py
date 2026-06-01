@@ -5,12 +5,27 @@ import os
 import json
 
 class TestJSONSubjectDao(unittest.TestCase):
+    def tearDown(self):
+        db_path = './tests/db'
+        subject = 'Алгоритми і структури даних'
+        subject2 = 'Основи IoT'
+        subject_path = f'{db_path}/{subject}.json'
+        subject_path2 = f'{db_path}/{subject2}.json'
+        subject_path3 = f'{db_path}/Cтруктури даних і алгоритми.json'
+        if os.path.exists(subject_path):
+            os.remove(subject_path)
+        if os.path.exists(subject_path2):
+            os.remove(subject_path2)
+        if os.path.exists(subject_path3):
+            os.remove(subject_path3)
+        os.rmdir(db_path)
+        
 
     def test_db_creation(self):
         db_path = './tests/db'
         dao = JSONSubjectDAO(db_path)
         self.assertTrue(os.path.exists(db_path))
-        os.rmdir(db_path)
+
 
     def test_subject_creation(self):
         db_path = './tests/db'
@@ -19,8 +34,7 @@ class TestJSONSubjectDao(unittest.TestCase):
         dao = JSONSubjectDAO(db_path)
         dao.create_subject(subject)
         self.assertTrue(os.path.exists(subject_path))
-        os.remove(subject_path)
-        os.rmdir(db_path)
+
 
     def test_task_creation(self):
         db_path = './tests/db'
@@ -42,8 +56,7 @@ class TestJSONSubjectDao(unittest.TestCase):
             self.assertIsNotNone(data['lab1'])
             self.assertEqual(data['lab2']['description'], 'just lab 2\n1. Do something')
             self.assertEqual(data['lab2']['criteria'], '5 very well\n0 very bad')
-        os.remove(subject_path)
-        os.rmdir(db_path)
+
 
     def test_get_subject_data(self):
         db_path = './tests/db'
@@ -62,8 +75,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data['lab1']['description'], 'just lab 1\n1. Create program\n2. Test it')
         self.assertEqual(data['lab2']['description'], 'just lab 2\n1. Do something')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
     
     def test_get_task_data(self):
         db_path = './tests/db'
@@ -79,8 +90,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertIsNotNone(data)
         self.assertEqual(data.description, 'just lab 1\n1. Create program\n2. Test it')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_non_existent_subject(self):
         db_path = './tests/db'
@@ -93,8 +102,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.get_subject_data(non_existent_subject)
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_get_empty_subject(self):
         db_path = './tests/db'
@@ -105,9 +112,6 @@ class TestJSONSubjectDao(unittest.TestCase):
 
         with self.assertRaises(Exception):
             dao.get_subject_data(subject)
-
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
 
     def test_non_existent_task(self):
@@ -130,8 +134,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.get_task_data(non_existent_subject, 'Завдання 1')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_creation_of_subject_that_exist(self):
         db_path = './tests/db'
@@ -144,8 +146,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.create_subject(subject)
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_creation_of_task_that_exist(self):
         db_path = './tests/db'
@@ -160,8 +160,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.create_task(task, subject)
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_teation_task_on_unexisting_subject(self):
         db_path = './tests/db'
@@ -176,8 +174,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.create_task(task, non_existent_subject)
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_delete_subject(self):
         db_path = './tests/db'
@@ -191,9 +187,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.get_subject_data(subject)
 
-        if os.path.exists(subject_path):
-            os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_delete_subject_that_not_exist(self):
         db_path = './tests/db'
@@ -206,8 +199,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.delete_subject(non_existent_subject)
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_delete_task(self):
         db_path = './tests/db'
@@ -224,8 +215,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.get_task_data(subject, 'Завдання 1')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_delete_task_that_not_exist(self):
         db_path = './tests/db'
@@ -247,8 +236,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.delete_task(non_existent_subject, 'Завдання 2')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_update_subject(self):
         db_path = './tests/db'
@@ -264,8 +251,6 @@ class TestJSONSubjectDao(unittest.TestCase):
 
         self.assertIsNotNone(dao.get_subject_data(updated_subject))
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_update_task(self):
         db_path = './tests/db'
@@ -283,8 +268,7 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data.name, 'Завдання 2')
         self.assertEqual(data.description, 'task 2')
         self.assertEqual(data.criteria, '5 - OMG!!!!, 0 - cringre')
-        os.remove(subject_path)
-        os.rmdir(db_path)
+
         
     def test_update_task_name_only(self):
         db_path = './tests/db'
@@ -302,8 +286,7 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data.name, 'Завдання 2')
         self.assertEqual(data.description, 'just lab 1\n1. Create program\n2. Test it')
         self.assertEqual(data.criteria, '5 very well\n0 very bad')
-        os.remove(subject_path)
-        os.rmdir(db_path)
+
 
     def test_update_task_descr_and_criteria_only(self):
         db_path = './tests/db'
@@ -321,8 +304,7 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data.name, 'Завдання 1')
         self.assertEqual(data.description, 'task 2')
         self.assertEqual(data.criteria,'5 - OMG!!!!, 0 - cringre')
-        os.remove(subject_path)
-        os.rmdir(db_path)
+
 
     def test_update_task_that_not_exits(self):
         db_path = './tests/db'
@@ -344,8 +326,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         with self.assertRaises(Exception):
             dao.update_task(non_existent_subject, 'dasdasdad', update_task)
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_is_subject_exist(self):
         db_path = './tests/db'
@@ -359,8 +339,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertTrue(dao.is_subject_exist(subject))
         self.assertFalse(dao.is_subject_exist(non_existent_subject))
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_is_task_exist(self):
         db_path = './tests/db'
@@ -379,9 +357,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertFalse(dao.is_task_exist(subject1, 'Завдання 2'))
         self.assertFalse(dao.is_task_exist(subject2, 'Завдання 1'))
 
-        os.remove(subject_path1)
-        os.remove(subject_path2)
-        os.rmdir(db_path)
 
     def test_addition_of_multiple_subjects_and_tasks(self):
         db_path = './tests/db'
@@ -406,9 +381,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data2['Завдання 3']['description'], 'just lab 3\n1. Create program 3\n2. Test it')
         self.assertEqual(data2['Завдання 4']['description'], 'just lab 4\n1. Create program 4\n2. Test it')
 
-        os.remove(subject_path1)
-        os.remove(subject_path2)
-        os.rmdir(db_path)
 
     def test_add_only_new_tasks(self):
         db_path = './tests/db'
@@ -428,8 +400,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data['Завдання 1']['description'], 'just lab 1\n1. Create program 1\n2. Test it')
         self.assertEqual(data['Завдання 2']['description'], 'just lab 2\n1. Create program 2\n2. Test it')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_update_task_when_fill_db(self):
         db_path = './tests/db'
@@ -449,8 +419,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data['Завдання 1']['description'], 'just lab 1!!!\n1. Create program 1\n2. Test it')
         self.assertEqual(data['Завдання 2']['description'], 'just lab 2\n1. Create program 2\n2. Test it')
 
-        os.remove(subject_path)
-        os.rmdir(db_path)
 
     def test_backup_db(self):
         db_path = './tests/db'
@@ -481,10 +449,6 @@ class TestJSONSubjectDao(unittest.TestCase):
         self.assertEqual(data1['Завдання 2']['description'], 'just lab 2\n1. Create program 2\n2. Test it')
         self.assertEqual(data2['Завдання 3']['description'], 'just lab 3\n1. Create program 3\n2. Test it')
         self.assertEqual(data2['Завдання 4']['description'], 'just lab 4\n1. Create program 4\n2. Test it')
-
-        os.remove(subject_path1)
-        os.remove(subject_path2)
-        os.rmdir(db_path)
 
 
 if __name__ == '__main__':
