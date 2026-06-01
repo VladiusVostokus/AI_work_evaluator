@@ -1,3 +1,5 @@
+import uuid
+
 from llm_api.llm_api_factory import llm_api
 from store_api.json_subject_dao import JSONSubjectDAO
 from store_api.task_dto import Task
@@ -6,6 +8,7 @@ from classroom_api.build_classroom import build_classroom
 import os
 
 store = 'jsondb'
+evaluation = 'evaluation'
 dao = JSONSubjectDAO(store)
 classroom_api = None
 
@@ -93,7 +96,12 @@ def check_task():
             task = dao.get_task_data(subject, task_name)
             llm.form_message(subject, task_path, task)
             llm.make_request()
-            print(llm.get_response())
+            short_id = str(uuid.uuid4().fields[-1])[:5]
+            evaluation_path = f'{evaluation}/{subject} {task_name}-{short_id}.txt'
+            evaluation_result = llm.get_response()
+            print(evaluation_result)
+            with open(evaluation_path, 'w', encoding='utf-8') as f:
+                f.write(evaluation_result)
         except Exception as e:
             print(f"Помилка під час перевірки завдання {e}")
     else:
@@ -216,6 +224,8 @@ if len(os.listdir(store)) == 0:
     dao.create_task(task, subject_name)
 
 while(True):
+    if not os.path.exists(evaluation):
+        os.mkdir(evaluation)
     print("Оберіть дію:\n" \
     "s - створити дисципліну\n" \
     "t - створити завдання\n" \

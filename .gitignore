@@ -9,3 +9,4 @@ tests/test_jsondb_and_classroom.py
 jsondb
 credentials.json
 token.json
+evaluation
