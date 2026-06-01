@@ -1,12 +1,12 @@
 from llm_api.gemini import Gemini
 from llm_api.mistral import MistralAi
-from llm_api.openai import OpenAI
+from llm_api.ollama import OllamaAi
 
 models = {
     "gemini-3-flash-preview": Gemini,
     "mistral-medium-latest": MistralAi,
     "mistral-large-latest": MistralAi,
-    'gpt-oss:20b': OpenAI,
+    'gpt-oss:20b': OllamaAi,
 }
 
 def llm_api(model_name):

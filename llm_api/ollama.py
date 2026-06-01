@@ -4,7 +4,7 @@ from interfaces.llm_model import LLMModel
 from work_file_parsers.parser_factory import work_parser
 from store_api.task_dto import Task
 
-class OpenAI(LLMModel):
+class OllamaAi(LLMModel):
     def __init__(self, modelname):
         self.model = modelname
 
