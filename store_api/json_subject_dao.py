@@ -59,7 +59,7 @@ class JSONSubjectDAO(SubjectDAO):
             data = {}
 
         if task_data.name in data:
-            raise Exception("Subject already exist")
+            raise Exception("Task already exist")
         
         data[task_data.name] = {
                 'description': task_data.description,
