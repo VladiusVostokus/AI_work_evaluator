@@ -62,7 +62,7 @@ class ClassroomAPI:
         except HttpError as e:
             print(f"Error while downloading files: {e}")
 
-    def __delete_temp_files(self, ids: list):
+    def __delete_temp_files(self, ids: dict):
         for id in ids:
             file_name = ids[id]
             os.remove(f'{id}{file_name}')
