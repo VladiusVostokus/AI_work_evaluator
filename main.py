@@ -19,7 +19,7 @@ def create_subject():
         dao.create_subject(subject)
         print(f"Дисципліна {subject} успішно створена\n")
     except Exception as e:
-        print(f"Помилка під час створення дисципліни {e}")
+        print(f"Помилка під час створення дисципліни {e}\n")
 
 def create_task():
     print("Оберіть дисципліну(вкажіть назву):")
@@ -62,7 +62,7 @@ def create_task():
         dao.create_task(task, subject)
         print(f"Завдання {task_name} для дисципліни {subject} успішно створене\n")
     except Exception as e:
-        print(f"Помилка під час створення завдання {e}")
+        print(f"Помилка під час створення завдання {e}\n")
         return
     
 
@@ -103,7 +103,7 @@ def check_task():
             with open(evaluation_path, 'w', encoding='utf-8') as f:
                 f.write(evaluation_result)
         except Exception as e:
-            print(f"Помилка під час перевірки завдання {e}")
+            print(f"Помилка під час перевірки завдання {e}\n")
     else:
         print("Вказано не вірне ім'я моделі")
 
@@ -124,7 +124,7 @@ def rename_subject():
         dao.rename_subject(old_name, new_name)
         print(f"Дисципліну {old_name} перейменовано в {new_name}\n")
     except Exception as e:
-        print(f"Помилка під час перейменування дисципліни: {e}")
+        print(f"Помилка під час перейменування дисципліни: {e}\n")
 
 def update_task():
     print("Введіть ім'я дисципліни:")
@@ -174,7 +174,7 @@ def update_task():
         dao.update_task(subject, task_name, task)
         print("Завдання успішно оновлене\n")
     except Exception as e:
-        print(f"Помилка під час оновлення дисципліни: {e}")
+        print(f"Помилка під час оновлення дисципліни: {e}\n")
 
 def update_db(classroom=classroom_api):
     print("Оновлення бази додасть дисципліни і завдання, яких не було і може оновити завдання існуючих дисциплін\n"\
@@ -194,7 +194,7 @@ def update_db(classroom=classroom_api):
             dao.fill_db(data, True)
         print("База даних успішно оновлена\n")
     except Exception as e:
-         print(f"Помилка під час оновлення бази: {e}")
+         print(f"Помилка під час оновлення бази: {e}\n")
     
 actions = {
     's': create_subject,
