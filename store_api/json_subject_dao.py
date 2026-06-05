@@ -24,7 +24,7 @@ class JSONSubjectDAO(SubjectDAO):
                 try:
                     data = json.load(s) 
                 except:
-                    raise Exception("Subject is empty")
+                    return {}
                 return data
         else:
             raise Exception("Subject doesn't exist")
