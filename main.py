@@ -222,6 +222,7 @@ if len(os.listdir(store)) == 0:
     criteria = task_parser.get_parsed_data()
     task = Task(task_name, description, criteria)
     dao.create_task(task, subject_name)
+    print("Ви успішно створили першу дисциліну та завдання!\n")
 
 while(True):
     if not os.path.exists(evaluation):
