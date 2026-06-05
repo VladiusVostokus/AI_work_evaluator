@@ -102,7 +102,8 @@ def check_task():
         llm.form_message(subject, task_path, task)
         llm.make_request()
         short_id = str(uuid.uuid4().fields[-1])[:5]
-        evaluation_path = f'{evaluation}/{subject} {task_name}-{short_id}.txt'
+        llm_name = llm_name.replace(':','-')
+        evaluation_path = f'{evaluation}/{subject} {task_name} {llm_name}-{short_id}.txt'
         evaluation_result = llm.get_response()
         print(evaluation_result + '\n')
         with open(evaluation_path, 'w', encoding='utf-8') as f:
