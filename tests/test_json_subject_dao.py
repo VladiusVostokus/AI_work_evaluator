@@ -110,8 +110,7 @@ class TestJSONSubjectDao(unittest.TestCase):
         dao = JSONSubjectDAO(db_path)
         dao.create_subject(subject)
 
-        with self.assertRaises(Exception):
-            dao.get_subject_data(subject)
+        self.assertEqual(dao.get_subject_data(subject), {})
 
 
     def test_non_existent_task(self):
