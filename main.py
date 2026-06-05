@@ -91,21 +91,24 @@ def check_task():
     print("Введіть ім'я мовної моделі, яку хочете використати:")
     llm_name = input()
     llm = llm_api(llm_name)
-    if llm != None:
-        try:
-            task = dao.get_task_data(subject, task_name)
-            llm.form_message(subject, task_path, task)
-            llm.make_request()
-            short_id = str(uuid.uuid4().fields[-1])[:5]
-            evaluation_path = f'{evaluation}/{subject} {task_name}-{short_id}.txt'
-            evaluation_result = llm.get_response()
-            print(evaluation_result + '\n')
-            with open(evaluation_path, 'w', encoding='utf-8') as f:
-                f.write(evaluation_result)
-        except Exception as e:
-            print(f"Помилка під час перевірки завдання {e}\n")
-    else:
-        print("Вказано не вірне ім'я моделі")
+    while llm == None:
+        print("Вказано не вірне ім'я моделі, вкажіть іншу модель, або q - щоб повернутися назад")
+        llm_name = input()
+        if (llm_name) == 'q': return
+        llm = llm_api(llm_name)
+
+    try:
+        task = dao.get_task_data(subject, task_name)
+        llm.form_message(subject, task_path, task)
+        llm.make_request()
+        short_id = str(uuid.uuid4().fields[-1])[:5]
+        evaluation_path = f'{evaluation}/{subject} {task_name}-{short_id}.txt'
+        evaluation_result = llm.get_response()
+        print(evaluation_result + '\n')
+        with open(evaluation_path, 'w', encoding='utf-8') as f:
+            f.write(evaluation_result)
+    except Exception as e:
+        print(f"Помилка під час перевірки завдання {e}\n")
 
 def exit_program():
     print("Завершення роботи програми")
