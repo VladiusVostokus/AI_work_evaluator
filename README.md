@@ -21,15 +21,15 @@ python3 -m venv env
 ```bash
 pip install -r requirements.txt
 ```
-4.1. Install [Ollama]([url](https://ollama.com/download)) if you are going to use local models
-4.2. Setup api keys for models you are going to use(Google, [Mistral]([url](https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key))) and save API keys to .env as GEM_API and MISTR_API
-5. Set up [Google Workspace API]([url](https://developers.google.com/workspace/classroom/quickstart/python))
-5.1. Set these scopes in Data Access
+5. Install [Ollama]([url](https://ollama.com/download)) if you are going to use local models
+6. Setup api keys for models you are going to use(Google, [Mistral]([url](https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key))) and save API keys to .env as GEM_API and MISTR_API
+7. Set up [Google Workspace API]([url](https://developers.google.com/workspace/classroom/quickstart/python))
+8. Set these scopes in Data Access
 ```bash
 https://www.googleapis.com/auth/classroom.courses.readonly
 https://www.googleapis.com/auth/classroom.coursework.students
 https://www.googleapis.com/auth/drive.readonly
 ```
-5.2. Save credentials.json and token.json in root of the project
-6. Launch(after first usage if updating DB via classroom, there will be page in browser that will ask some access to google services
+9. Save credentials.json and token.json in root of the project
+10. Launch main.py(after first usage if updating DB via classroom, there will be page in browser that will ask some access to google services
 
