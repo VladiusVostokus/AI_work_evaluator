@@ -31,7 +31,22 @@ https://www.googleapis.com/auth/classroom.coursework.students
 https://www.googleapis.com/auth/drive.readonly
 ```
 9. Save credentials.json and token.json in root of the project
-10. Launch main.py(after first updating DB via classroom, there will be page in browser that will ask some access to google services)
+
+## Usage
+1. Launch main.py(after first updating DB via classroom, there will be page in browser that will ask some access to google services)
+2. Navigate using CLI, programm will write a message in console about which symbols type to do some action on programm
+3. For descriptions and criterias use .docx or .pdf files(you need to pass file paths when programm asks). Warning: there are some problems with pdf files, so if you want to use them, it is better to use files with simpler content because sometimes programm doesn't always correcly get text blocks and tables from pdf document(I'll try to fix this)
+
+## Tests
+Code is tested automatically by github actions, to run all test use in console:
+```bash
+python -m unittest discover ./tests
+```
+
+To run some specific test, use this in console:
+```bash
+python -m unittest .\tests\test_some_gile.py
+```
     
 ## Add new models
 For now, MistralAPI, GoogleAPI and Ollama are available, so you can add any model from this API's.
