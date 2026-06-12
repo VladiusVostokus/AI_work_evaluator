@@ -32,4 +32,7 @@ https://www.googleapis.com/auth/drive.readonly
 ```
 9. Save credentials.json and token.json in root of the project
 10. Launch main.py(after first updating DB via classroom, there will be page in browser that will ask some access to google services)
-
+    
+## Add new models
+For now, MistralAPI, GoogleAPI and Ollama are available, so you can add any model from this API's.
+To do it, go to file [```llm_api_factory.py```](https://github.com/VladiusVostokus/AI_work_evaluator/blob/main/llm_api/llm_api_factory.py) to dictionary ```models```. Add record for this dict "model-name": LLMAPIClass. If some llm is from MistralAPI, instead of LLMAPIClass add MistralAi etc.
